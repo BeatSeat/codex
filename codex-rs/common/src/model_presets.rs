@@ -184,7 +184,7 @@ static PRESETS: Lazy<Vec<ModelPreset>> = Lazy::new(|| {
                 reasoning_effort_mapping: None,
                 migration_config_key: HIDE_GPT_5_1_CODEX_MAX_MIGRATION_PROMPT_CONFIG,
             }),
-            show_in_picker: false,
+            show_in_picker: true,
         },
         ModelPreset {
             id: "gpt-5-codex-mini",
@@ -208,7 +208,7 @@ static PRESETS: Lazy<Vec<ModelPreset>> = Lazy::new(|| {
                 reasoning_effort_mapping: None,
                 migration_config_key: HIDE_GPT5_1_MIGRATION_PROMPT_CONFIG,
             }),
-            show_in_picker: false,
+            show_in_picker: true,
         },
         ModelPreset {
             id: "gpt-5",
@@ -240,7 +240,7 @@ static PRESETS: Lazy<Vec<ModelPreset>> = Lazy::new(|| {
                 reasoning_effort_mapping: None,
                 migration_config_key: HIDE_GPT_5_1_CODEX_MAX_MIGRATION_PROMPT_CONFIG,
             }),
-            show_in_picker: false,
+            show_in_picker: true,
         },
     ]
 });
@@ -249,7 +249,7 @@ pub fn builtin_model_presets(auth_mode: Option<AuthMode>) -> Vec<ModelPreset> {
     PRESETS
         .iter()
         .filter(|preset| match auth_mode {
-            Some(AuthMode::ApiKey) => preset.show_in_picker && preset.id != "gpt-5.1-codex-max",
+            Some(AuthMode::ApiKey) => preset.show_in_picker,
             _ => preset.show_in_picker,
         })
         .cloned()
@@ -269,15 +269,5 @@ mod tests {
     fn only_one_default_model_is_configured() {
         let default_models = PRESETS.iter().filter(|preset| preset.is_default).count();
         assert!(default_models == 1);
-    }
-
-    #[test]
-    fn gpt_5_1_codex_max_hidden_for_api_key_auth() {
-        let presets = builtin_model_presets(Some(AuthMode::ApiKey));
-        assert!(
-            presets
-                .iter()
-                .all(|preset| preset.id != "gpt-5.1-codex-max")
-        );
     }
 }
