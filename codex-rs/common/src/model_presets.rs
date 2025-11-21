@@ -263,7 +263,6 @@ pub fn all_model_presets() -> &'static Vec<ModelPreset> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use codex_app_server_protocol::AuthMode;
 
     #[test]
     fn only_one_default_model_is_configured() {
